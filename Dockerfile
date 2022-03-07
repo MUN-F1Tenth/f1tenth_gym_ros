@@ -47,5 +47,9 @@ RUN source /opt/ros/foxy/setup.bash && \
     rosdep install -i --from-path src --rosdistro foxy -y && \
     colcon build
 
+# Add a convenience script to start simulator
+COPY run_simulator.sh /sim_ws
+RUN chmod +x /sim_ws/run_simulator.sh
+
 WORKDIR '/sim_ws'
 ENTRYPOINT ["/bin/bash"]
