@@ -211,15 +211,15 @@ class GymBridge(Node):
     def teleop_callback(self, twist_msg):
         if not self.ego_drive_published:
             self.ego_drive_published = True
-        if twist_msg.linear.x != 0.0:
-            self.ego_requested_speed = twist_msg.linear.x
-            self.ego_steer = 0.0
-            return
+
+        self.ego_requested_speed = twist_msg.linear.x
+
         if twist_msg.angular.z > 0.0:
             self.ego_steer = 0.3
-            return
         elif twist_msg.angular.z < 0.0:
             self.ego_steer = -0.3
+        else:
+            self.ego_steer = 0.0
 
     def drive_timer_callback(self):
         if self.ego_drive_published and not self.has_opp:
@@ -260,8 +260,6 @@ class GymBridge(Node):
         self._publish_transforms(ts)
         self._publish_laser_transforms(ts)
         self._publish_wheel_transforms(ts)
-
-        # TODO: pub race info?
 
     def _update_sim_state(self):
         self.ego_scan = list(self.obs['scans'][0])

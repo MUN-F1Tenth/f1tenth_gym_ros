@@ -30,6 +30,7 @@ RUN apt-get update --fix-missing && \
                        nano \
                        vim \
                        python3-pip \
+                       libeigen3-dev \
                        tmux
 
 RUN pip3 install transforms3d
@@ -44,6 +45,7 @@ RUN mkdir -p sim_ws/src/f1tenth_gym_ros
 COPY . /sim_ws/src/f1tenth_gym_ros
 RUN source /opt/ros/foxy/setup.bash && \
     cd sim_ws/ && \
+    apt-get update --fix-missing && \
     rosdep install -i --from-path src --rosdistro foxy -y && \
     colcon build
 
